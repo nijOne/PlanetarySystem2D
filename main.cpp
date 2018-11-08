@@ -4,11 +4,11 @@
 // Planetary system simulation //  g++ main.cpp -o output `pkg-config --cflags --libs opencv`   
 /* todo                                                  // ideas
 
-	refractoring                                         linked list as internal structur of planetary system
+	refractoring                                        
 	                                                    ?background noise, with random generated color from a certain Temperature range
-    posZ !!
+    	posZ !!
 	... (soon to be discovered)                          stars colors based by the Wien's displacement law
-	learn Unreal Engine            ?                     wincyj pointerów!
+	learn Unreal Engine            ?                     
 	and use it to simulate effects ?
 */
 
