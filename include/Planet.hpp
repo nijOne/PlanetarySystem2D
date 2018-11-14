@@ -3,8 +3,7 @@
 
 #include "Satellite.hpp"
 #include "CelestialBody.hpp"
-#include "vector"
-#include "map"
+
 
 
 class Planet : public CelestialBody {
@@ -16,24 +15,26 @@ class Planet : public CelestialBody {
     map<string, Satellite*> satelliteMAP;
 
 
-    Planet(string name, double a, double e, double m, CelestialBody* source, double omega) {//`~~~?
+    Planet(string name, Scalar color, double semiMajorAxis, double eccentricy, double massInEarthMass, CelestialBody* source, double omega) {//`~~~?
 
         this->name = name;
-        this->mass = m;
-        this->semiMajorAxis = a * ASTRONOMICALUnit;
-        this->eccentricy = e;
+        this->color = color;
+        this->mass = massInEarthMass * CelestialBody::MASSOfEarth;
+        this->semiMajorAxis = semiMajorAxis * ASTRONOMICALUnit;
+        this->eccentricy = eccentricy;
         this->source = source;
         this->omega = omega;
 
         calcPeriod();
     }
 
-    void addSatellite(string SatelliteName, double a, double e, double m, double omega) {
+    void addSatellite(string SatelliteName, Scalar color, double semiMajorAxis, double eccentricy, double massInEarthMass, int axisMultiplier,  double omega) {
         
-        satellitesPTR.push_back(new Satellite(SatelliteName, a, e, m, this, omega));satelliteMAP[SatelliteName] = satellitesPTR.back();
+        satellitesPTR.push_back(new Satellite(SatelliteName, color, semiMajorAxis, eccentricy, massInEarthMass, this, axisMultiplier, omega));
+        satelliteMAP[SatelliteName] = satellitesPTR.back();
     }
 
-    void calcDistanceAndPosition(int dayCount) {
+    void calcDistanceAndPosition(float dayCount) {
 
         double theta = dayCount * calcThetaFromTimeGap();
         distanceFromSource = semiMajorAxis * (1 - pow(eccentricy,2)) / ( 1 + eccentricy * cos(theta*M_PI/180));
@@ -43,21 +44,13 @@ class Planet : public CelestialBody {
 
     void calcPeriod() {
 
-        this->ORBITPeriodCONST =  4.0*M_PI*M_PI/(GRAVConst * source->mass );
-        this->periodT =  sqrt(pow(semiMajorAxis,3)*ORBITPeriodCONST);
+        ORBITPeriodCONST =  4.0*M_PI*M_PI/(GRAVConst * source->mass );
+        periodT =  sqrt(pow(semiMajorAxis,3)*ORBITPeriodCONST);
     }
 
     double calcThetaFromTimeGap() {
 
         return dt * 360 / periodT;
-    }
-
-    std::string returnPosition() {
-
-        std::stringstream ss;
-        ss << posX  << " " << posY  << ";";
-
-        return ss.str();
     }
 };
 

@@ -9,19 +9,22 @@ class Satellite : public CelestialBody {
 
     CelestialBody *source = nullptr;
 
-    Satellite(string name, double a, double e, double m, CelestialBody* source, double omega) {//`~~~?
+    Satellite(string name, Scalar color, double semiMajorAxis, double eccentricy, double massInEarthMass, CelestialBody* source, int axisMultiplier, double omega) {//`~~~?
 
         this->name = name;
-        this->mass = m;
-        this->semiMajorAxis = a * ASTRONOMICALUnit;
-        this->eccentricy = e;
+        this->color = color;
+        this->mass = massInEarthMass * CelestialBody::MASSOfEarth;
+        this->semiMajorAxis = semiMajorAxis * ASTRONOMICALUnit;
+        this->eccentricy = eccentricy;
         this->source = source;
         this->omega = omega;
 
         calcPeriod();
+
+        this->semiMajorAxis *= axisMultiplier;
     }   
 
-     void calcDistanceAndPosition(int dayCount) {
+     void calcDistanceAndPosition(float dayCount) {
 
         double theta = dayCount * calcThetaFromTimeGap();
         distanceFromSource = semiMajorAxis * (1 - pow(eccentricy,2)) / ( 1 + eccentricy * cos(theta*M_PI/180));
@@ -30,22 +33,14 @@ class Satellite : public CelestialBody {
     }
 
     void calcPeriod() {
-
-        this->ORBITPeriodCONST =  4.0*M_PI*M_PI/(GRAVConst * source->mass );
-        this->periodT =  sqrt(pow(semiMajorAxis,3)*ORBITPeriodCONST);
+ 
+        ORBITPeriodCONST =  4.0*M_PI*M_PI/(GRAVConst * source->mass );
+        periodT =  sqrt(pow(semiMajorAxis,3)*ORBITPeriodCONST);
     }
 
     double calcThetaFromTimeGap() {
 
         return dt * 360 / periodT;
-    }
-
-    std::string returnPosition() {
-
-        std::stringstream ss;
-        ss << posX  << " " << posY  << ";";
-
-        return ss.str();
     }
 };
 

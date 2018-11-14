@@ -6,12 +6,6 @@
 #include "Planet.hpp"
 #include "Satellite.hpp"
 
-#include <vector>
-#include <map>
-
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-
 using namespace std;
 using namespace cv;
 
@@ -24,64 +18,74 @@ class PlanetarySystem {
     vector<Planet*> planetsPTR;
     map<string, Planet*> planetsMAP;
 
-    int dayCount = 0;
+    int zoom = 200;
+
+    float dayCount = 0;
 
     PlanetarySystem (string name) {
 
         this->name = name;
     }
 
-    void setSource (string name, double mass) {
+    void setSource (string name, Scalar color, double mass) {
 
-        this->sourceStar = new Star(name, mass);
+        this->sourceStar = new Star(name, color, mass);
     }
 
-    void addPlanet (string name, double a, double e, double m, double omega ) {
+    void addPlanet (string name, Scalar color, double semiMajorAxis, double eccentricy, double massInEarthMass, double omega ) {
     
-        this->planetsPTR.push_back(new Planet(name, a, e, m, sourceStar, omega));
-        this->planetsMAP[name] = planetsPTR.back();
+        planetsPTR.push_back(new Planet(name, color, semiMajorAxis, eccentricy, massInEarthMass, sourceStar, omega));
+        planetsMAP[name] = planetsPTR.back();
     }
 
-    void addSatelliteToPlanet (string satelliteName, string planetName, double a, double e, double m, double omega ) {
+    void addSatelliteToPlanet (string satelliteName, string planetName, Scalar color, double semiMajorAxis, double eccentricy, double massInEarthMass, int axisMultiplier, double omega ) {
 
-        this->planetsMAP[planetName]->addSatellite(satelliteName, a, e, m, omega);
+        planetsMAP[planetName]->addSatellite(satelliteName, color, semiMajorAxis, eccentricy, massInEarthMass, axisMultiplier, omega);
     }
 
-    void setImagePointer(Mat* image){
+    void setImagePointer(Mat* image) {
 
-        this->imagePTR = image;
+        imagePTR = image;
     }
 
-    Point windowCoords( double positionX, double positionY){
+    Point windowCoords( double positionX, double positionY) {
     
-        return Point((imagePTR->cols/2 + (int)200*positionX), ( (int)200*positionY + imagePTR->rows/2));    
+        return Point((imagePTR->cols/2 + (int)zoom*positionX), ( imagePTR->rows/2) + (int)zoom*positionY);    
     }
 
     void placeBodiesOnImage() {
         
-        circle(*imagePTR, windowCoords( sourceStar->posX, sourceStar->posY), 30, Scalar(255,255,255), -1);
+        circle(*imagePTR, windowCoords(sourceStar->posX, sourceStar->posY), 30, sourceStar->color, -1);
 
-        vector<Planet*>::iterator itP;
-        vector<Satellite*>::iterator itS;
-
-        for (itP = planetsPTR.begin(); itP != planetsPTR.end(); itP++){
+        for (vector<Planet*>::iterator itP = planetsPTR.begin(); itP != planetsPTR.end(); itP++) {
 
             (*itP)->calcDistanceAndPosition(dayCount);
-            circle(*imagePTR, windowCoords( (*itP)->posX , (*itP)->posY), 15, Scalar(255,255,255), -1);   
+            circle(*imagePTR, windowCoords( (*itP)->posX , (*itP)->posY), 15, (*itP)->color, -1);   
 
             if( !(*itP)->satellitesPTR.empty()) {
-                for( itS = (*itP)->satellitesPTR.begin(); itS != (*itP)->satellitesPTR.end(); itS++) {
+                for( vector<Satellite*>::iterator itS = (*itP)->satellitesPTR.begin(); itS != (*itP)->satellitesPTR.end(); itS++) {
 
                     (*itS)->calcDistanceAndPosition(dayCount); 
-                    circle(*imagePTR, windowCoords( (*itS)->posX , (*itS)->posY), 5, Scalar(255,0,0), -1);   
+                    circle(*imagePTR, windowCoords( (*itS)->posX , (*itS)->posY), 5, (*itS)->color, -1);   
                 }
             }
         }
     } 
 
-    void daysPerFrame(int n) {
+    void daysPerFrame(float n) {
 
         dayCount += n;
+    }
+
+    void zoomIn() {
+
+        zoom += 10;  
+    }
+
+    void zoomOut() {
+
+        if(zoom > 10) { zoom -= 10; }
+        else { cout << "Unable to zoom out." << endl; }
     }
 };
 #endif
