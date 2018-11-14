@@ -10,8 +10,8 @@
 	destructors                                          ?background noise, with random generated color from a certain Temperature range
     OpenCV style buttons and trackbars ?
 	... (soon to be discovered)                          stars colors based by the Wien's displacement law
-	learn Unreal Engine            ?                     
-	and use it to simulate effects ?                     
+	learn OpenGL                             
+	and use it to simulate effects                      
 */
 
 using namespace std;
