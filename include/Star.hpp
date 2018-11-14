@@ -7,14 +7,14 @@
 class Star : public CelestialBody {
     public:
 
-    Star(string name, double n){
+    Star(string name, Scalar color, double massInSunMass){
 
         this->name = name;
-        this->mass = n*MASSOfSun;
+        this->color = color;
+        this->mass = massInSunMass*MASSOfSun;
         this->posX = 0;
         this->posY = 0;
     }
-
 };
 
 #endif

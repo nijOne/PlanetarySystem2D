@@ -4,13 +4,20 @@
 #include <iostream>
 #include <math.h>
 #include <sstream>
+#include <vector>
+#include <map>
+
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 
 using namespace std;
+using namespace cv;
 
 class CelestialBody{
     public:
 
     string name;
+    Scalar color;
 
     double posX = 0, posY = 0;                                  // [m]
     double mass = 0;                                            // [kg]
@@ -27,9 +34,9 @@ class CelestialBody{
     constexpr static double MASSOfSun = 1.98855e30;             // [kg]
     constexpr static double ASTRONOMICALUnit = 1.49598e11;      // [m]
 
-    double ORBITPeriodCONST =  0;
+    double ORBITPeriodCONST =  0;                               //
 
-    double periodT = 0;
+    double periodT = 0;                                         //
 };
 
 #endif
