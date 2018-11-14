@@ -76,8 +76,6 @@ int main() {
     solarSystem.addSatelliteToPlanet("Moon", "Earth", moonColor, 0.00257, 0.0, 0.0123, 50, 0);
     solarSystem.addSatelliteToPlanet("Phobos", "Mars", moonColor, 9376e3/AU, 0.0151, 1.78477e-9, 500, 20);
     solarSystem.addSatelliteToPlanet("Deimos", "Mars", moonColor, 23463.2e3/AU, 0.00033, 0.247179e-9, 500, 89);
-
-    VideoWriter video("sample.mp4",CV_FOURCC('M','P','4','V'), FPS, image.size());
     
     while(true) {
 
