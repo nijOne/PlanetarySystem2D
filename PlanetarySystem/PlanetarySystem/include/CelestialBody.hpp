@@ -28,7 +28,8 @@ struct CelestialBody{
         int green;
         int blue;
 
-        Color() = default;
+        Color(int red, int green, int blue)
+            : red(red), green(green), blue(blue) {};
     };
     struct Coordinates
     {

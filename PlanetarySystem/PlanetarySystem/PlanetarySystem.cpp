@@ -80,7 +80,7 @@ void run()
         //string str = ("\r" + solarSystem.printAllPlanets() + "___%");
         //cout << str;
  
-        cout << solarSystem.trackPlanet("Earth") + "\r" << flush;
+        cout << solarSystem.trackPlanet("Earth") + "\r";
         cout << solarSystem.printAllPlanets() << "\033[2J" << flush ;
 
         solarSystem.daysPerFrame(FPS);

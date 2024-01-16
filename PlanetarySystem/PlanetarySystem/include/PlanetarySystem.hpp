@@ -8,6 +8,8 @@
 #include "unordered_map"
 #include "memory"
 #include "functional"
+#include "algorithm"
+
 using namespace std;
 
 class PlanetarySystem {
@@ -44,30 +46,23 @@ class PlanetarySystem {
     }
 
     void adjustCoordinates() {
-        
-        if (!starsMAP.empty()) {
+
+        if (!starsMAP.empty())
             for (auto& star : starsMAP) {
-                //star.second->printBasic();
-                if (!planetsMAP.empty()) {
-                    for (auto& planet : planetsMAP) {
+                if (!planetsMAP.empty())
+                    for (auto& planet : planetsMAP)
                         planet.second->calcDistanceAndPosition(dayCount, star.second.get());
-                    }
-                }
-                if (!satelitesMAP.empty()) {
-                    for (auto& satelite : satelitesMAP) {
+                if (!satelitesMAP.empty())
+                    for (auto& satelite : satelitesMAP)
                         satelite.second->calcDistanceAndPosition(dayCount, satelite.second->source);
-                    }
-                }
             }
-        }
-    } 
+    }
+
     //template<typename Object> 
     string printAllPlanets()    {
         stringstream ss;
-        for (auto& planet : planetsMAP) {
+        for (auto& planet : planetsMAP)
             ss << trackPlanet(planet.first) << "\n";
-        }
-        //refresh output 
 
         return ss.str();
     }

@@ -6,13 +6,13 @@
 add_executable (PlanetarySystem "PlanetarySystem.cpp" "PlanetarySystem.h" )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET PlanetarySystem PROPERTY CXX_STANDARD 17)
+  set_property(TARGET PlanetarySystem PROPERTY CXX_STANDARD 20)
 endif()
 target_include_directories(PlanetarySystem PUBLIC
             $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
             $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
-target_compile_features(PlanetarySystem INTERFACE cxx_std_17)
+target_compile_features(PlanetarySystem INTERFACE cxx_std_20)
 
 
 # TODO: Add tests and install targets if needed.
